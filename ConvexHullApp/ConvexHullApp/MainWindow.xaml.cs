@@ -49,8 +49,10 @@ public partial class MainWindow : Window
     }
 
     private void RandomizePointsDelegate(object sender, RandomizePointsEventArgs args) 
+    private void CleanCanvasCallback(object sender, RoutedEventArgs e)
     {
         MessageBox.Show("Losuj punkty, argumenty: ilość punktów: " + args.AmountOfPoints);
+        Debug.WriteLine("clean");
     }
 
 }
