@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.Design;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -15,9 +16,8 @@ public partial class MainWindow : Window
         InitializeComponent();
     }
 
-    private void TestClick(object sender, RoutedEventArgs e)
+    private void CleanCanvasCallback(object sender, RoutedEventArgs e)
     {
-        Button test = (Button)sender;
-        test.Background = Brushes.Maroon;
+        Debug.WriteLine("clean");
     }
 }
