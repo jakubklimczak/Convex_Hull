@@ -1,13 +1,7 @@
-﻿using System.Text;
+﻿using System.ComponentModel.Design;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace ConvexHullApp;
 
@@ -19,5 +13,11 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+    }
+
+    private void TestClick(object sender, RoutedEventArgs e)
+    {
+        Button test = (Button)sender;
+        test.Background = Brushes.Maroon;
     }
 }
