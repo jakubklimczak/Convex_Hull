@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.Design;
 using System.Diagnostics;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -14,10 +15,24 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+
+        run_control_panel.CleanCavasButtonClicked += CleanCanvasDelegate;
+        run_control_panel.RunAlgorithmButtonClicked += RunAlgorithmDelegate;
+        run_control_panel.RandomizePointsButtonClicked += RandomizePointsDelegate;
     }
 
-    private void CleanCanvasCallback(object sender, RoutedEventArgs e)
+    private void CleanCanvasDelegate(object sender, EventArgs args) 
     {
-        Debug.WriteLine("clean");
+        MessageBox.Show("Wyczyść");
+    }
+
+    private void RunAlgorithmDelegate(object sender, RunAlgorithmEventArgs args) 
+    {
+        MessageBox.Show("Uruchom, argumenty: typ algorytmu: "+args.AlgType+" ilość powtórzeń: "+args.NumberOfIterattions);
+    }
+
+    private void RandomizePointsDelegate(object sender, RandomizePointsEventArgs args) 
+    {
+        MessageBox.Show("Losuj punkty, argumenty: ilość punktów: " + args.AmountOfPoints);
     }
 }
