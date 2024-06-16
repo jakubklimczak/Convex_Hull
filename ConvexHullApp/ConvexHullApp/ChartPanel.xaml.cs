@@ -115,6 +115,9 @@ namespace ConvexHullApp
 
             DataPoint nearest_point = point_scatter.Data.GetNearest(mouse_position, PointChart.Plot.LastRender);
 
+            Debug.WriteLine(nearest_point.X + " " + nearest_point.Y);
+            Debug.WriteLine(point_scatter.Data.GetScatterPoints().Count);
+
             if (nearest_point.IsReal) 
             {
                 MoveHighlightMarker(nearest_point.Coordinates);
@@ -199,6 +202,8 @@ namespace ConvexHullApp
                 points_array[i] = Tuple.Create(coordinates_list[i].X, coordinates_list[i].Y);
             }
             return points_array;
+            coordinates_list.Add(new Coordinates(x, y));
+            PointChart.Refresh();
         }
 
         public void RemoveHighlightedPoint() 
