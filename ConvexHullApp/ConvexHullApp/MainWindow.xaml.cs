@@ -26,11 +26,26 @@ public partial class MainWindow : Window
     private void CleanCanvasDelegate(object sender, EventArgs args) 
     {
         MessageBox.Show("Wyczyść");
+        //FIXME: Maybe we should add posibility to clear just the hull without points
+        points_chart_panel.ClearHull();
+        points_chart_panel.RemoveAllPoints();
+        points_chart_panel.Unlock();
+        points_chart_panel.ShowCoordinatesText();
     }
 
     private void RunAlgorithmDelegate(object sender, RunAlgorithmEventArgs args) 
     {
+        points_chart_panel.Lock();
         MessageBox.Show("Uruchom, argumenty: typ algorytmu: "+args.AlgType+" ilość powtórzeń: "+args.NumberOfIterattions);
+        var points = points_chart_panel.GetPointsList();
+
+        foreach (var point in points) 
+        {
+            Debug.WriteLine(point.ToString());
+        }
+
+        points_chart_panel.AddHull(points);
+        points_chart_panel.HideCoordinatesText();
     }
 
     private void RandomizePointsDelegate(object sender, RandomizePointsEventArgs args) 

@@ -1,9 +1,11 @@
 ﻿using OpenTK.Windowing.Common;
 using ScottPlot;
+using ScottPlot.AxisLimitManagers;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -34,12 +36,16 @@ namespace ConvexHullApp
         private List<Coordinates> coordinates_list;
         private ScottPlot.Plottables.Scatter point_scatter;
         private ScottPlot.Plottables.Marker highlight_marker;
+        private ScottPlot.Plottables.Polygon hull;
+        private List<ScottPlot.Plottables.Text> coordinates_text_list;
 
+        private bool is_locked;
         public ChartPanel()
         {
             InitializeComponent();
 
             coordinates_list = new List<Coordinates>();
+            coordinates_text_list = new List<ScottPlot.Plottables.Text>();
             point_scatter = PointChart.Plot.Add.Scatter(coordinates_list);
             point_scatter.LineWidth = 0;
             point_scatter.Color = ScottPlot.Color.FromColor(System.Drawing.Color.Black);
@@ -51,6 +57,7 @@ namespace ConvexHullApp
             highlight_marker.IsVisible = false;
 
             PointChart.Refresh();
+            Unlock();
         }
 
         private void ChartMouseClicked(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -80,6 +87,12 @@ namespace ConvexHullApp
         {
             ModifierKeys modifiers = Keyboard.Modifiers;
 
+            if (is_locked) 
+            {
+                ChangeCurrentMode(ChartPanelMode.Default);
+                return;
+            }
+
             if (modifiers == ModifierKeys.Control)
             {
                 ChangeCurrentMode(ChartPanelMode.Add);
@@ -101,9 +114,6 @@ namespace ConvexHullApp
             ScottPlot.Coordinates mouse_position = PointChart.Plot.GetCoordinates(current_pixel);
 
             DataPoint nearest_point = point_scatter.Data.GetNearest(mouse_position, PointChart.Plot.LastRender);
-
-            Debug.WriteLine(nearest_point.X + " " + nearest_point.Y);
-            Debug.WriteLine(point_scatter.Data.GetScatterPoints().Count);
 
             if (nearest_point.IsReal) 
             {
@@ -140,30 +150,111 @@ namespace ConvexHullApp
             
         }
 
+        public void Lock() 
+        {
+            is_locked = true;
+            PointChart.Plot.DataBackground.Color = ScottPlot.Color.FromColor(System.Drawing.Color.Gray);
+        }
+
+        public void Unlock() 
+        {
+            is_locked = false;
+            PointChart.Plot.DataBackground.Color = ScottPlot.Color.FromColor(System.Drawing.Color.White);
+        }
+
+        public void HideCoordinatesText() 
+        {
+            foreach(var text in coordinates_text_list) 
+            {
+                text.IsVisible = false;
+            }
+        }
+
+        public void ShowCoordinatesText() 
+        {
+            foreach (var text in coordinates_text_list)
+            {
+                text.IsVisible = true;
+            }
+        }
+
         public void AddNewPoint(ScottPlot.Coordinates _coordinates)
         {
             coordinates_list.Add(_coordinates);
+            string coordinates_text = Math.Round(_coordinates.X, 2) + "," + Math.Round(_coordinates.Y, 2);
+            coordinates_text_list.Add(PointChart.Plot.Add.Text(coordinates_text, _coordinates));
             PointChart.Refresh();
         }
 
         public void AddNewPoint(double x, double y)
         {
-            coordinates_list.Add(new Coordinates(x, y));
-            PointChart.Refresh();
+            AddNewPoint(new Coordinates(x, y));
+        }
+
+        public Tuple<double, double>[] GetPointsList() 
+        {
+            Tuple<double, double>[] points_array = new Tuple<double, double>[coordinates_list.Count];
+            for (int i = 0; i < coordinates_list.Count; i++) 
+            {
+                points_array[i] = Tuple.Create(coordinates_list[i].X, coordinates_list[i].Y);
+            }
+            return points_array;
         }
 
         public void RemoveHighlightedPoint() 
         {
             coordinates_list.Remove(highlight_marker.Location);
+            RemovePointsText(highlight_marker.Location);
             HideHighLightMarker();
             PointChart.Refresh();
+        }
+
+
+        //This whole method is just very very bad hack but I have no effort to do it better
+        private void RemovePointsText(Coordinates coord) 
+        {
+            string coordinates_text = Math.Round(coord.X, 2) + "," + Math.Round(coord.Y, 2);
+            Debug.WriteLine(coordinates_text);
+
+            var text_plottables = PointChart.Plot.GetPlottables<ScottPlot.Plottables.Text>();
+            for (int i = 0; i < text_plottables.Count(); i++)
+            {
+                var item = text_plottables.ElementAt(i);
+                Debug.WriteLine(item.LabelText);
+
+                if (item.LabelText == coordinates_text && item.Location == coord)
+                {
+                    PointChart.Plot.Remove(item);
+                }
+            }
         }
 
         public void RemoveAllPoints() 
         {
             coordinates_list.Clear();
+            RemoveAllCoordinatesTexts();
             HideHighLightMarker();
             PointChart.Refresh();
+        }
+
+        public void AddHull(Tuple<double, double>[] points_array) 
+        {
+            List<Coordinates> points = new List<Coordinates>();
+
+            foreach (var point in points_array)
+            {
+                points.Add(new Coordinates(point.Item1, point.Item2));
+            }
+
+            hull = PointChart.Plot.Add.Polygon(points.ToArray());
+            hull.FillColor = ScottPlot.Color.FromColor(System.Drawing.Color.Transparent);
+            hull.LineColor = ScottPlot.Color.FromColor(System.Drawing.Color.Blue);
+            PointChart.Refresh();
+        }
+
+        public void ClearHull() 
+        {
+            PointChart.Plot.Remove(hull);
         }
 
         private void UserControlLoaded(object sender, RoutedEventArgs e) 
@@ -181,6 +272,14 @@ namespace ConvexHullApp
         {
             highlight_marker.IsVisible = false;
             PointChart.Refresh();
+        }
+
+        private void RemoveAllCoordinatesTexts() 
+        {
+            foreach(var text in coordinates_text_list) 
+            {
+                coordinates_text_list.Remove(text);
+            }
         }
     }
 
