@@ -1,8 +1,10 @@
-﻿using System.ComponentModel.Design;
+﻿using ScottPlot.WPF;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace ConvexHullApp;
@@ -35,4 +37,5 @@ public partial class MainWindow : Window
     {
         MessageBox.Show("Losuj punkty, argumenty: ilość punktów: " + args.AmountOfPoints);
     }
+
 }
