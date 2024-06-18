@@ -1,6 +1,4 @@
-﻿using System;
-using ConvexHullApp;
-using System.Windows;
+﻿using System.Windows;
 namespace ConvexHullApp;
 
 /// <summary>
