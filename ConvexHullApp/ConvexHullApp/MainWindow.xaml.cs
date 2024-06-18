@@ -17,7 +17,6 @@ public partial class MainWindow : Window
 
     private void TestClick(object sender, RoutedEventArgs e)
     {
-        Button test = (Button)sender;
-        test.Background = Brushes.Maroon;
+        ((Button)sender).Background = Brushes.Maroon;
     }
 }
