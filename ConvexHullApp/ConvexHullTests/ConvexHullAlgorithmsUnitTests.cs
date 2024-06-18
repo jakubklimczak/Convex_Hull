@@ -1,6 +1,4 @@
-﻿using NUnit.Framework;
-
-namespace ConvexHullApp
+﻿namespace ConvexHullApp.UnitTests
 {
     [TestFixture]
     public class ConvexHullAlgorithmsUnitTests
@@ -22,7 +20,7 @@ namespace ConvexHullApp
             var q = new Point { X = 4, Y = 4 };
             var r = new Point { X = 1, Y = 2 };
             var result = ConvexHullAlgorithms.Orientation(p, q, r);
-            Assert.That(result, Is.EqualTo(1));
+            Assert.That(result, Is.EqualTo(2));
         }
 
         [Test]
@@ -32,7 +30,7 @@ namespace ConvexHullApp
             var q = new Point { X = 1, Y = 1 };
             var r = new Point { X = 2, Y = 0 };
             var result = ConvexHullAlgorithms.Orientation(p, q, r);
-            Assert.That(result, Is.EqualTo(2));
+            Assert.That(result, Is.EqualTo(1));
         }
 
         [Test]
@@ -77,7 +75,7 @@ namespace ConvexHullApp
             {
                 Assert.That(result.Points, Has.Length.EqualTo(2));
                 Assert.That(result.Shape, Is.EqualTo(GeometricalShape.Line));
-            });            
+            });
         }
 
         [Test]

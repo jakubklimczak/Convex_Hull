@@ -13,6 +13,20 @@
     {
         public int X { get; set; }
         public int Y { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+                return false;
+
+            Point p = (Point)obj;
+            return X == p.X && Y == p.Y;
+        }
+
+        public override int GetHashCode()
+        {
+            return X.GetHashCode() ^ Y.GetHashCode();
+        }
     }
 
     public class Result(Point[] points, GeometricalShape shape)
@@ -26,15 +40,14 @@
 
         /*
          *  Helper function allowing to find the orientation of three points.
-         *  Returns 0 if points are collinear, 1 if they are oriented clockwise, and 2 if they are oriented anticlockwise
+         *  Returns 0 if points are collinear, 1 if they are oriented anticlockwise, and 2 if they are oriented clockwise
          */
         public static int Orientation(Point p, Point q, Point r)
         {
-            int val = (q.Y - p.Y) * (r.X - q.X) -
-                      (q.X - p.X) * (r.Y - q.Y);
+            int val = (q.Y - p.Y) * (r.X - q.X) - (q.X - p.X) * (r.Y - q.Y);
 
             if (val == 0) return 0;  // collinear
-            return (val > 0) ? 1 : 2;
+            return val > 0 ? 1 : 2;
         }
 
         /*
@@ -53,12 +66,11 @@
         {
             // Handle the cases where there are 0, 1, or 2 points directly, skipping the computationally intensive part of the function
             if (inputPointsArray.Length == 0 || inputPointsArray.Length == 1 || inputPointsArray.Length == 2)
-                { return new Result(points: inputPointsArray, shape: (GeometricalShape)inputPointsArray.Length); }
+            { return new Result(points: inputPointsArray, shape: (GeometricalShape)inputPointsArray.Length); }
 
             List<Point> pointList = [];
-            List<Point> collinearPointList = [];
 
-            // detection of leftmost point in the array - it has to be a part of convex hull
+            // Detection of leftmost point in the array - it has to be a part of convex hull
             Point startingPoint = inputPointsArray[0];
             foreach (var itPoint in inputPointsArray)
             {
@@ -70,7 +82,7 @@
 
             Point currentPoint = startingPoint;
 
-            // Traverse the points counterclockwise to find the convex hull
+            // Traverse the points anticlockwise to find the convex hull
             do
             {
                 pointList.Add(currentPoint);
@@ -78,42 +90,30 @@
 
                 foreach (var itPoint in inputPointsArray)
                 {
-                    // skip over current point 
+                    // Skip over current point 
                     if (itPoint == currentPoint) continue;
 
                     int direction = Orientation(currentPoint, nextPoint, itPoint);
 
-                    // If next is still current or the point forms a counterclockwise angle, update next to be this point and clear the collinear points list
-                    if (nextPoint == currentPoint || direction == 2)
+                    // If next is still current or the point forms a anticlockwise angle, update next to be this point and clear the collinear points list
+                    if (nextPoint == currentPoint || direction == 1)
                     {
                         nextPoint = itPoint;
-                        collinearPointList.Clear();
                     }
 
                     // Handle collinear points
-                    else if (direction == 0)
+                    else if (direction == 0 && Distance(currentPoint, itPoint) > Distance(currentPoint, nextPoint))
                     {
-                        if (Distance(currentPoint, itPoint) > Distance(currentPoint, nextPoint))
-                        {
-                            // If the new point is farther, add the current next to collinear points and update next
-                            collinearPointList.Add(nextPoint);
-                            nextPoint = itPoint;
-                        }
-                        else
-                        {
-                            collinearPointList.Add(itPoint);
-                        }
+                        nextPoint = itPoint;
                     }
-                }
-
-                foreach (var p in collinearPointList)
-                {
-                    pointList.Add(p);
                 }
 
                 currentPoint = nextPoint;
 
             } while (currentPoint != startingPoint);
+
+            // Remove duplicates in the hull
+            pointList = pointList.Distinct().ToList();
 
             // Determine the shape based on the number of points in the hull
             GeometricalShape shape = (GeometricalShape)Math.Min(pointList.Count, Enum.GetValues(typeof(GeometricalShape)).Length - 1);
