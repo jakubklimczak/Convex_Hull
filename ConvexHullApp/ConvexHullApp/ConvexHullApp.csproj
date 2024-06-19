@@ -19,6 +19,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="ScottPlot.WPF" Version="5.0.35" />
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="9.26.0.92422">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+
+
+  <ItemGroup>
     <PackageReference Include="NUnit" Version="4.1.0" />
     <PackageReference Include="NUnit.Analyzers" Version="4.2.0">
       <PrivateAssets>all</PrivateAssets>

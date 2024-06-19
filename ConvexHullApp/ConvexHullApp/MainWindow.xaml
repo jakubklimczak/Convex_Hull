@@ -3,12 +3,25 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ScottPlot="clr-namespace:ScottPlot.WPF;assembly=ScottPlot.WPF"
         xmlns:local="clr-namespace:ConvexHullApp"
         mc:Ignorable="d"
-        Title="MainWindow" Height="1080" Width="1920">
-    <Grid>
-        <Button Width="100" Height="50" Name="test" Click="TestClick">
-            Test button
-        </Button>
+        Title="ConvexHullApp" Height="1080" Width="1920">
+    <Grid Margin="10" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" ShowGridLines="False">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition /> 
+        </Grid.RowDefinitions>
+
+        <local:ChartPanel Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" Grid.ColumnSpan="4" x:Name="points_chart_panel"/>
+        <local:RunControlPanel Grid.Row="3" Grid.ColumnSpan="4" x:Name="run_control_panel"/>
     </Grid>
 </Window>
