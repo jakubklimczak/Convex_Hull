@@ -38,9 +38,12 @@ public partial class MainWindow : Window
         MessageBox.Show("Uruchom, argumenty: typ algorytmu: "+args.AlgType+" ilość powtórzeń: "+args.NumberOfIterattions);
         var points = points_chart_panel.GetPointsList();
 
-        foreach (var point in points) 
+        //var result = ConvexHullAlgorithms.JarvisHullAlgorithm(points);
+
+        foreach (var point in points)
         {
-            Debug.WriteLine(point.ToString());
+            Debug.WriteLine(point.X.ToString());
+            Debug.WriteLine(point.Y.ToString());
         }
 
         points_chart_panel.AddHull(points);

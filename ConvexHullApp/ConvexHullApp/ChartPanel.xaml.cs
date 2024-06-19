@@ -114,9 +114,6 @@ namespace ConvexHullApp
 
             DataPoint nearest_point = point_scatter.Data.GetNearest(mouse_position, PointChart.Plot.LastRender);
 
-            Debug.WriteLine(nearest_point.X + " " + nearest_point.Y);
-            Debug.WriteLine(point_scatter.Data.GetScatterPoints().Count);
-
             if (nearest_point.IsReal) 
             {
                 MoveHighlightMarker(nearest_point.Coordinates);
@@ -233,12 +230,12 @@ namespace ConvexHullApp
             AddNewPoint(new Coordinates(x, y));
         }
 
-        public Tuple<double, double>[] GetPointsList() 
+        public ConvexHullApp.Point[] GetPointsList() 
         {
-            Tuple<double, double>[] points_array = new Tuple<double, double>[coordinates_list.Count];
+            ConvexHullApp.Point[] points_array = new Point[coordinates_list.Count];
             for (int i = 0; i < coordinates_list.Count; i++) 
             {
-                points_array[i] = Tuple.Create(coordinates_list[i].X, coordinates_list[i].Y);
+                points_array[i] = new Point { X = (int)(coordinates_list[i].X), Y = (int)(coordinates_list[i].Y) };
             }
             return points_array;
         }
@@ -284,13 +281,13 @@ namespace ConvexHullApp
             PointChart.Refresh();
         }
 
-        public void AddHull(Tuple<double, double>[] points_array) 
+        public void AddHull(ConvexHullApp.Point[] points_array) 
         {
             List<Coordinates> points = new List<Coordinates>();
 
             foreach (var point in points_array)
             {
-                points.Add(new Coordinates(point.Item1, point.Item2));
+                points.Add(new Coordinates(point.X, point.Y));
             }
 
             hull = PointChart.Plot.Add.Polygon(points.ToArray());
