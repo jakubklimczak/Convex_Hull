@@ -1,22 +1,8 @@
-﻿using OpenTK.Windowing.Common;
-using ScottPlot;
-using ScottPlot.AxisLimitManagers;
-using System;
-using System.Collections.Generic;
+﻿using ScottPlot;
 using System.Diagnostics;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace ConvexHullApp
 {
@@ -35,7 +21,7 @@ namespace ConvexHullApp
         private List<Coordinates> coordinates_list;
         private ScottPlot.Plottables.Scatter point_scatter;
         private ScottPlot.Plottables.Marker highlight_marker;
-        private ScottPlot.Plottables.Polygon hull;
+        private ScottPlot.Plottables.Polygon? hull;
         private List<ScottPlot.Plottables.Text> coordinates_text_list;
 
         private bool is_locked;
@@ -298,7 +284,7 @@ namespace ConvexHullApp
 
         public void ClearHull() 
         {
-            PointChart.Plot.Remove(hull);
+            PointChart.Plot.Remove(hull!);
         }
 
         private void UserControlLoaded(object sender, RoutedEventArgs e) 

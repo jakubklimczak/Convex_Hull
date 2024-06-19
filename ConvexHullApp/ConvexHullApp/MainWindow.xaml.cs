@@ -18,9 +18,9 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
 
-        run_control_panel.CleanCavasButtonClicked += CleanCanvasDelegate;
-        run_control_panel.RunAlgorithmButtonClicked += RunAlgorithmDelegate;
-        run_control_panel.RandomizePointsButtonClicked += RandomizePointsDelegate;
+        run_control_panel.CleanCavasButtonClicked += CleanCanvasDelegate!;
+        run_control_panel.RunAlgorithmButtonClicked += RunAlgorithmDelegate!;
+        run_control_panel.RandomizePointsButtonClicked += RandomizePointsDelegate!;
     }
 
     private void CleanCanvasDelegate(object sender, EventArgs args) 

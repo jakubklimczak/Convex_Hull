@@ -51,9 +51,9 @@ namespace ConvexHullApp
     /// </summary>
     public partial class RunControlPanel : UserControl
     {
-        public event EventHandler CleanCavasButtonClicked;
-        public event EventHandler<RandomizePointsEventArgs> RandomizePointsButtonClicked;
-        public event EventHandler<RunAlgorithmEventArgs> RunAlgorithmButtonClicked;
+        public event EventHandler? CleanCavasButtonClicked;
+        public event EventHandler<RandomizePointsEventArgs>? RandomizePointsButtonClicked;
+        public event EventHandler<RunAlgorithmEventArgs>? RunAlgorithmButtonClicked;
 
         public RunControlPanel()
         {
@@ -70,8 +70,8 @@ namespace ConvexHullApp
         {
             try
             {
-                TextBox RandomPointsTextBox = (TextBox)FindName("RandomPointsTextBox");
-                int AmountOfPoints = GetNumberFromTextBox(RandomPointsTextBox);
+                TextBox RandomPointsText = (TextBox)FindName("RandomPointsTextBox");
+                int AmountOfPoints = GetNumberFromTextBox(RandomPointsText);
                 RandomizePointsButtonClicked?.Invoke(this, new RandomizePointsEventArgs(AmountOfPoints));
             }
             catch (Exception ex) 
@@ -85,8 +85,8 @@ namespace ConvexHullApp
         {
             try
             {
-                TextBox IterrationsTextBox = (TextBox)FindName("IterrationsTextBox");
-                int AmountOfIterrations = GetNumberFromTextBox(IterrationsTextBox);
+                TextBox IterrationsText = (TextBox)FindName("IterrationsTextBox");
+                int AmountOfIterrations = GetNumberFromTextBox(IterrationsText);
 
 
                 RunAlgorithmButtonClicked?.Invoke(this, new RunAlgorithmEventArgs(GetAlgorithmType(), AmountOfIterrations));
@@ -107,8 +107,8 @@ namespace ConvexHullApp
         //FIXME: this function is not triggered when spacebar or deletion is performed
         private void PositiveNumbersTextBoxValidation(object sender, TextCompositionEventArgs e)
         {
-            TextBox textbox = (sender as TextBox);
-            var TextValue = textbox.Text.Insert(textbox.CaretIndex,e.Text);
+            TextBox? textbox = (sender as TextBox);
+            var TextValue = textbox!.Text.Insert(textbox.CaretIndex,e.Text);
             e.Handled = !IsTextPositiveNumber(TextValue);
         }
 
@@ -123,22 +123,19 @@ namespace ConvexHullApp
         {
             var CheckedRadioButton = AlgorithmPanel.Children.OfType<RadioButton>().FirstOrDefault(r => r.IsChecked.HasValue && r.IsChecked.Value);
             if (CheckedRadioButton == null)
-                throw new ArgumentNullException("No algorithm has been selected");
+                throw new ArgumentNullException(message:"No algorithm has been selected",null);
 
-            string content = CheckedRadioButton.Content.ToString();
+            string? content = CheckedRadioButton.Content.ToString();
             switch (content) 
             {
                 case "Graham":
                     return AlgorithmType.Graham;
-                break;
 
                 case "Jarvis":
                     return AlgorithmType.Jarvis;
-                break;
 
                 default:
                     throw new ArgumentException("Undefined type of algorithm has been selected");
-                break;
             }
 
         }
