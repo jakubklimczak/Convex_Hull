@@ -45,9 +45,7 @@ public partial class MainWindow : Window
 
         points_chart_panel.AddHull(points);
     }
-
-    private void RandomizePointsDelegate(object sender, RandomizePointsEventArgs args) 
-    private void CleanCanvasCallback(object sender, RoutedEventArgs e)
+    private void RandomizePointsDelegate(object sender, RandomizePointsEventArgs args)
     {
         MessageBox.Show("Losuj punkty, argumenty: ilość punktów: " + args.AmountOfPoints);
         Debug.WriteLine("clean");

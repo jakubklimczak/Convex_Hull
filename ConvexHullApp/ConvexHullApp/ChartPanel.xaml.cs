@@ -26,7 +26,6 @@ namespace ConvexHullApp
         Add,
         Remove
     }
-
     /// <summary>
     /// Logika interakcji dla klasy ChartPnale.xaml
     /// </summary>
@@ -242,8 +241,6 @@ namespace ConvexHullApp
                 points_array[i] = Tuple.Create(coordinates_list[i].X, coordinates_list[i].Y);
             }
             return points_array;
-            coordinates_list.Add(new Coordinates(x, y));
-            PointChart.Refresh();
         }
 
         public void RemoveHighlightedPoint() 
