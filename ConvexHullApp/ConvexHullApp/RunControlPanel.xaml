@@ -29,8 +29,16 @@
         </Button>
 
         <StackPanel Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="AlgorithmPanel">
-            <RadioButton IsChecked="True" Content="Graham" GroupName="AlgorthimOptions" Margin="0,0,0,10"/>
-            <RadioButton Content="Jarvis" GroupName="AlgorthimOptions" Margin="0,0,0,10"/>
+            <RadioButton IsChecked="True" Content="Graham" GroupName="AlgorthimOptions" Margin="0,0,0,10">
+                <RadioButton.RenderTransform>
+                    <ScaleTransform ScaleX="2" ScaleY="2" />
+                </RadioButton.RenderTransform>
+            </RadioButton>
+            <RadioButton Content="Jarvis" GroupName="AlgorthimOptions" Margin="0,30,0,0">
+                <RadioButton.RenderTransform>
+                    <ScaleTransform ScaleX="2" ScaleY="2" />
+                </RadioButton.RenderTransform>
+            </RadioButton>
         </StackPanel>
 
 

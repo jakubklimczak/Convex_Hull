@@ -30,7 +30,6 @@ public partial class MainWindow : Window
         points_chart_panel.ClearHull();
         points_chart_panel.RemoveAllPoints();
         points_chart_panel.Unlock();
-        points_chart_panel.ShowCoordinatesText();
     }
 
     private void RunAlgorithmDelegate(object sender, RunAlgorithmEventArgs args) 
@@ -45,7 +44,6 @@ public partial class MainWindow : Window
         }
 
         points_chart_panel.AddHull(points);
-        points_chart_panel.HideCoordinatesText();
     }
 
     private void RandomizePointsDelegate(object sender, RandomizePointsEventArgs args) 

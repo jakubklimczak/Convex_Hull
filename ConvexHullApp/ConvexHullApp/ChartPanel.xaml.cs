@@ -128,6 +128,26 @@ namespace ConvexHullApp
             }
         }
 
+        private void showGridCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            ShowGrid();
+        }
+
+        private void showGridCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            HideGrid();
+        }
+
+        private void showCoordiantesCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            ShowCoordinatesText();
+        }
+
+        private void showCoordiantesCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            HideCoordinatesText();
+        }
+
         private void ChangeCurrentMode(ChartPanelMode new_mode)
         {
             current_mode = new_mode;
@@ -167,24 +187,44 @@ namespace ConvexHullApp
 
         public void HideCoordinatesText() 
         {
-            foreach(var text in coordinates_text_list) 
+            if (coordinates_text_list == null)
+                return;
+
+            foreach (var text in coordinates_text_list) 
             {
                 text.IsVisible = false;
             }
+            PointChart.Refresh();
         }
 
         public void ShowCoordinatesText() 
         {
+            if (coordinates_text_list == null)
+                return;
+
             foreach (var text in coordinates_text_list)
             {
                 text.IsVisible = true;
             }
+            PointChart.Refresh();
+        }
+
+        public void ShowGrid() 
+        {
+            PointChart.Plot.ShowGrid(); 
+            PointChart.Refresh();
+        }
+
+        public void HideGrid() 
+        {
+            PointChart.Plot.HideGrid();
+            PointChart.Refresh();
         }
 
         public void AddNewPoint(ScottPlot.Coordinates _coordinates)
         {
             coordinates_list.Add(_coordinates);
-            string coordinates_text = Math.Round(_coordinates.X, 2) + "," + Math.Round(_coordinates.Y, 2);
+            string coordinates_text = GetTextFromCoordinates(_coordinates);
             coordinates_text_list.Add(PointChart.Plot.Add.Text(coordinates_text, _coordinates));
             PointChart.Refresh();
         }
@@ -218,7 +258,7 @@ namespace ConvexHullApp
         //This whole method is just very very bad hack but I have no effort to do it better
         private void RemovePointsText(Coordinates coord) 
         {
-            string coordinates_text = Math.Round(coord.X, 2) + "," + Math.Round(coord.Y, 2);
+            string coordinates_text = GetTextFromCoordinates(coord);
             Debug.WriteLine(coordinates_text);
 
             var text_plottables = PointChart.Plot.GetPlottables<ScottPlot.Plottables.Text>();
@@ -232,6 +272,11 @@ namespace ConvexHullApp
                     PointChart.Plot.Remove(item);
                 }
             }
+        }
+
+        private string GetTextFromCoordinates(Coordinates coord) 
+        {
+            return Math.Round(coord.X, 2) + " " + Math.Round(coord.Y, 2);
         }
 
         public void RemoveAllPoints() 
@@ -283,8 +328,10 @@ namespace ConvexHullApp
         {
             foreach(var text in coordinates_text_list) 
             {
-                coordinates_text_list.Remove(text);
+                PointChart.Plot.Remove(text);
             }
+
+            coordinates_text_list = new List<ScottPlot.Plottables.Text>();
         }
     }
 
