@@ -61,7 +61,7 @@ namespace ConvexHullApp
 
         private void ChartMouseClicked(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            Point current_position = e.GetPosition(this);
+            System.Windows.Point current_position = e.GetPosition(this);
             ScottPlot.Pixel current_pixel = new ScottPlot.Pixel(current_position.X, current_position.Y);
             ScottPlot.Coordinates current_coordinates = PointChart.Plot.GetCoordinates(current_pixel);
 
@@ -108,7 +108,7 @@ namespace ConvexHullApp
 
         private void OnMouseMoved(object sender, MouseEventArgs e) 
         {
-            Point current_position = e.GetPosition(this);
+            System.Windows.Point current_position = e.GetPosition(this);
             ScottPlot.Pixel current_pixel = new ScottPlot.Pixel(current_position.X, current_position.Y);
             ScottPlot.Coordinates mouse_position = PointChart.Plot.GetCoordinates(current_pixel);
 
