@@ -1,64 +1,77 @@
 ﻿namespace ConvexHullApp
 {
-    public enum GeometricalShape
+    public class Point(double x, double y)
     {
-        BlankSpace,
-        Point,
-        Line,
-        Triangle,
-        Quadrilateral
-    }
+        public double X { get; set; } = x;
+        public double Y { get; set; } = y;
+        private const double Epsilon = 1e-9;
 
-    #pragma warning disable CS8765
-    public class Point
-    {
-        public int X { get; set; }
-        public int Y { get; set; }
-
-        
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
-            if (obj == null || GetType() != obj.GetType())
-                return false;
-
-            Point p = (Point)obj;
-            return X == p.X && Y == p.Y;
+            if (obj == null) return false;
+            if (obj is Point other)
+            {
+                return Math.Abs(X - other.X) < Epsilon && Math.Abs(Y - other.Y) < Epsilon;
+            }
+            return false;
         }
-
         public override int GetHashCode()
         {
-            return X.GetHashCode() ^ Y.GetHashCode();
+            return HashCode.Combine(Math.Round(X / Epsilon), Math.Round(Y / Epsilon));
         }
     }
-    #pragma warning restore CS8765
 
-    public class Result(Point[] points, GeometricalShape shape)
+    public class Result(Point[] points, string shape)
     {
-        public Point[] Points = points;
-        public GeometricalShape Shape = shape;
+        public Point[] Points { get; set; } = points;
+        public string Shape { get; set; } = shape;
     }
 
     public static class ConvexHullAlgorithms
     {
-
         /*
-         *  Helper function allowing to find the orientation of three points.
-         *  Returns 0 if points are collinear, 1 if they are oriented anticlockwise, and 2 if they are oriented clockwise
+         * Helper function for returning the correct name of the geometrical figure
          */
-        public static int Orientation(Point p, Point q, Point r)
+        private static string GetFigureName(int numberOfPoints)
         {
-            int val = (q.Y - p.Y) * (r.X - q.X) - (q.X - p.X) * (r.Y - q.Y);
-
-            if (val == 0) return 0;  // collinear
-            return val > 0 ? 1 : 2;
+            return numberOfPoints switch
+            {
+                0 => "Blank - Convex Hull invalid",
+                1 => "Point - Convex Hull invalid",
+                2 => "Line Segment - Convex Hull invalid",
+                3 => "Triangle",
+                4 => "Quadrilateral",
+                5 => "Pentagon",
+                6 => "Hexagon",
+                7 => "Heptagon",
+                8 => "Octagon",
+                _ => numberOfPoints + "-gon",
+            };
         }
 
         /*
-         *  Helper function allowing to find the distance between 2 points.
+         * Helper function for clearing duplicates from the point array
          */
-        public static double Distance(Point p, Point q)
+        public static Point[] RemoveDuplicates(Point[] points)
         {
-            return Math.Sqrt((q.X - p.X) * (q.X - p.X) + (q.Y - p.Y) * (q.Y - p.Y));
+            HashSet<Point> uniquePoints = new(points);
+            return new List<Point>(uniquePoints).ToArray();
+        }
+
+        /*
+         *  Helper function allowing to find the orientation of three points.
+         *  Returns 0 if points are collinear, -1 if they are oriented anticlockwise, and 1 if they are oriented clockwise
+         */
+        public static int Orientation(Point p, Point q, Point r)
+        {
+            double val = (q.Y - p.Y) * (r.X - q.X) - (q.X - p.X) * (r.Y - q.Y);
+
+            if (Math.Abs(val) > -0.0000001 && Math.Abs(val) < 0.0000001)
+            {
+                return 0; // collinear
+            }
+
+            return (val > 0) ? -1 : 1; // clock or anticlock wise
         }
 
         /*
@@ -69,59 +82,44 @@
         {
             // Handle the cases where there are 0, 1, or 2 points directly, skipping the computationally intensive part of the function
             if (inputPointsArray.Length == 0 || inputPointsArray.Length == 1 || inputPointsArray.Length == 2)
-            { return new Result(points: inputPointsArray, shape: (GeometricalShape)inputPointsArray.Length); }
+            { 
+                return new Result(points: inputPointsArray, shape: GetFigureName(inputPointsArray.Length)); 
+            }
+
+            inputPointsArray = RemoveDuplicates(inputPointsArray);
 
             List<Point> pointList = [];
 
             // Detection of leftmost point in the array - it has to be a part of convex hull
-            Point startingPoint = inputPointsArray[0];
-            foreach (var itPoint in inputPointsArray)
+            int leftmostIndex = 0;
+            for (int i = 1; i < inputPointsArray.Length; i++)
             {
-                if (itPoint.X < startingPoint.X)
+                if (inputPointsArray[i].X < inputPointsArray[leftmostIndex].X)
                 {
-                    startingPoint = itPoint;
+                    leftmostIndex = i;
                 }
             }
-
-            Point currentPoint = startingPoint;
+            int currentPointIndex = leftmostIndex, nextPointIndex;
 
             // Traverse the points anticlockwise to find the convex hull
             do
             {
-                pointList.Add(currentPoint);
-                Point nextPoint = inputPointsArray[0];
+                pointList.Add(inputPointsArray[currentPointIndex]);
+                nextPointIndex = (currentPointIndex + 1) % inputPointsArray.Length;
 
-                foreach (var itPoint in inputPointsArray)
+                for (int i = 0; i < inputPointsArray.Length; i++)
                 {
-                    // Skip over current point 
-                    if (itPoint == currentPoint) continue;
-
-                    int direction = Orientation(currentPoint, nextPoint, itPoint);
-
-                    // If next is still current or the point forms a anticlockwise angle, update next to be this point and clear the collinear points list
-                    if (nextPoint == currentPoint || direction == 1)
+                    if (Orientation(inputPointsArray[currentPointIndex], inputPointsArray[i], inputPointsArray[nextPointIndex]) == 1)
                     {
-                        nextPoint = itPoint;
-                    }
-
-                    // Handle collinear points
-                    else if (direction == 0 && Distance(currentPoint, itPoint) > Distance(currentPoint, nextPoint))
-                    {
-                        nextPoint = itPoint;
+                        nextPointIndex = i;
                     }
                 }
 
-                currentPoint = nextPoint;
+                currentPointIndex = nextPointIndex;
+            } while (currentPointIndex != leftmostIndex);
 
-            } while (currentPoint != startingPoint);
-
-            // Remove duplicates in the hull
-            pointList = pointList.Distinct().ToList();
-
-            // Determine the shape based on the number of points in the hull
-            GeometricalShape shape = (GeometricalShape)Math.Min(pointList.Count, Enum.GetValues(typeof(GeometricalShape)).Length - 1);
-
-            return new Result(points: [.. pointList], shape: shape);
+            string figureName = GetFigureName(pointList.Count);
+            return new Result([.. pointList], figureName);
         }
     }
 }

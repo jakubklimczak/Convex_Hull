@@ -1,17 +1,13 @@
-﻿using ScottPlot.WPF;
-using System.ComponentModel.Design;
-using System.Diagnostics;
-using System.Reflection;
+﻿using System.Diagnostics;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
 
 namespace ConvexHullApp;
 
-/// <summary>
-/// Interaction logic for MainWindow.xaml
-/// </summary>
+/*
+ * <summary>
+ * Interaction logic for MainWindow.xaml
+ * </summary>
+ */
 public partial class MainWindow : Window
 {
     public MainWindow()
@@ -37,16 +33,9 @@ public partial class MainWindow : Window
         points_chart_panel.Lock();
         MessageBox.Show("Uruchom, argumenty: typ algorytmu: "+args.AlgType+" ilość powtórzeń: "+args.NumberOfIterattions);
         var points = points_chart_panel.GetPointsList();
-
-        //var result = ConvexHullAlgorithms.JarvisHullAlgorithm(points);
-
-        foreach (var point in points)
-        {
-            Debug.WriteLine(point.X.ToString());
-            Debug.WriteLine(point.Y.ToString());
-        }
-
-        points_chart_panel.AddHull(points);
+        var result = ConvexHullAlgorithms.JarvisHullAlgorithm(points);
+        points_chart_panel.AddHull(result.Points);
+        //FIXME: Utilise the result.Shape message - display it somewhere in the GUI
     }
     private void RandomizePointsDelegate(object sender, RandomizePointsEventArgs args)
     {

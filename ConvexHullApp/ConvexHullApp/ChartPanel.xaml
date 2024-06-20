@@ -26,13 +26,13 @@
                            KeyUp="OnKeyDown" MouseMove="OnMouseMoved"/>
 
         <StackPanel Grid.Column="4" VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="0,30,0,0">
-            <CheckBox x:Name="showGridCheckBox" Content="Display grid" IsChecked="True" Checked="showGridCheckBox_Checked" Unchecked="showGridCheckBox_Unchecked">
+            <CheckBox x:Name="ShowGridCheckBox" Content="Display grid" IsChecked="True" Checked="ShowGridCheckBox_Checked" Unchecked="ShowGridCheckBox_Unchecked">
                 <CheckBox.LayoutTransform>
                     <ScaleTransform ScaleX="2" ScaleY="2" />
                 </CheckBox.LayoutTransform>
             </CheckBox>
-            <CheckBox x:Name="showCoordiantesCheckBox" Content="Display coordinates" IsChecked="True" Margin="0,20,0,0" 
-                      Checked="showCoordiantesCheckBox_Checked" Unchecked="showCoordiantesCheckBox_Unchecked">
+            <CheckBox x:Name="ShowCoordinatesCheckBox" Content="Display coordinates" IsChecked="True" Margin="0,20,0,0" 
+                      Checked="ShowCoordinatesCheckBox_Checked" Unchecked="ShowCoordinatesCheckBox_Unchecked">
                 <CheckBox.LayoutTransform>
                     <ScaleTransform ScaleX="2" ScaleY="2" />
                 </CheckBox.LayoutTransform>

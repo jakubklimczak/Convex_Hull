@@ -12,9 +12,12 @@ namespace ConvexHullApp
         Add,
         Remove
     }
-    /// <summary>
-    /// Logika interakcji dla klasy ChartPnale.xaml
-    /// </summary>
+
+    /* 
+     *  <summary>
+     *  Interaction logic for class ChartPanel.xaml
+     *  </summary>
+     */
     public partial class ChartPanel : UserControl
     {
         private ChartPanelMode current_mode;
@@ -29,8 +32,8 @@ namespace ConvexHullApp
         {
             InitializeComponent();
 
-            coordinates_list = new List<Coordinates>();
-            coordinates_text_list = new List<ScottPlot.Plottables.Text>();
+            coordinates_list = [];
+            coordinates_text_list = [];
             point_scatter = PointChart.Plot.Add.Scatter(coordinates_list);
             point_scatter.LineWidth = 0;
             point_scatter.Color = ScottPlot.Color.FromColor(System.Drawing.Color.Black);
@@ -48,7 +51,7 @@ namespace ConvexHullApp
         private void ChartMouseClicked(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             System.Windows.Point current_position = e.GetPosition(this);
-            ScottPlot.Pixel current_pixel = new ScottPlot.Pixel(current_position.X, current_position.Y);
+            ScottPlot.Pixel current_pixel = new(current_position.X, current_position.Y);
             ScottPlot.Coordinates current_coordinates = PointChart.Plot.GetCoordinates(current_pixel);
 
             switch (current_mode)
@@ -95,7 +98,7 @@ namespace ConvexHullApp
         private void OnMouseMoved(object sender, MouseEventArgs e) 
         {
             System.Windows.Point current_position = e.GetPosition(this);
-            ScottPlot.Pixel current_pixel = new ScottPlot.Pixel(current_position.X, current_position.Y);
+            ScottPlot.Pixel current_pixel = new(current_position.X, current_position.Y);
             ScottPlot.Coordinates mouse_position = PointChart.Plot.GetCoordinates(current_pixel);
 
             DataPoint nearest_point = point_scatter.Data.GetNearest(mouse_position, PointChart.Plot.LastRender);
@@ -110,22 +113,22 @@ namespace ConvexHullApp
             }
         }
 
-        private void showGridCheckBox_Checked(object sender, RoutedEventArgs e)
+        private void ShowGridCheckBox_Checked(object sender, RoutedEventArgs e)
         {
             ShowGrid();
         }
 
-        private void showGridCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        private void ShowGridCheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
             HideGrid();
         }
 
-        private void showCoordiantesCheckBox_Checked(object sender, RoutedEventArgs e)
+        private void ShowCoordinatesCheckBox_Checked(object sender, RoutedEventArgs e)
         {
             ShowCoordinatesText();
         }
 
-        private void showCoordiantesCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        private void ShowCoordinatesCheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
             HideCoordinatesText();
         }
@@ -134,25 +137,13 @@ namespace ConvexHullApp
         {
             current_mode = new_mode;
 
-            switch (current_mode) 
+            PointChart.Cursor = current_mode switch
             {
-                case ChartPanelMode.Default:
-                    PointChart.Cursor = Cursors.Arrow;
-                break;
-
-                case ChartPanelMode.Add:
-                    PointChart.Cursor = Cursors.Cross;
-                break;
-
-                case ChartPanelMode.Remove:
-                    PointChart.Cursor = Cursors.No;
-                break;
-
-                default:
-                    PointChart.Cursor = Cursors.Arrow;
-                break;
-            }
-            
+                ChartPanelMode.Default => Cursors.Arrow,
+                ChartPanelMode.Add => Cursors.Cross,
+                ChartPanelMode.Remove => Cursors.No,
+                _ => Cursors.Arrow,
+            };
         }
 
         public void Lock() 
@@ -221,7 +212,7 @@ namespace ConvexHullApp
             ConvexHullApp.Point[] points_array = new Point[coordinates_list.Count];
             for (int i = 0; i < coordinates_list.Count; i++) 
             {
-                points_array[i] = new Point { X = (int)(coordinates_list[i].X), Y = (int)(coordinates_list[i].Y) };
+                points_array[i] = new Point(coordinates_list[i].X, coordinates_list[i].Y);
             }
             return points_array;
         }
@@ -254,7 +245,7 @@ namespace ConvexHullApp
             }
         }
 
-        private string GetTextFromCoordinates(Coordinates coord) 
+        private static string GetTextFromCoordinates(Coordinates coord)
         {
             return Math.Round(coord.X, 2) + " " + Math.Round(coord.Y, 2);
         }
@@ -269,14 +260,14 @@ namespace ConvexHullApp
 
         public void AddHull(ConvexHullApp.Point[] points_array) 
         {
-            List<Coordinates> points = new List<Coordinates>();
+            List<Coordinates> points = [];
 
             foreach (var point in points_array)
             {
                 points.Add(new Coordinates(point.X, point.Y));
             }
 
-            hull = PointChart.Plot.Add.Polygon(points.ToArray());
+            hull = PointChart.Plot.Add.Polygon([.. points]);
             hull.FillColor = ScottPlot.Color.FromColor(System.Drawing.Color.Transparent);
             hull.LineColor = ScottPlot.Color.FromColor(System.Drawing.Color.Blue);
             PointChart.Refresh();
@@ -311,7 +302,7 @@ namespace ConvexHullApp
                 PointChart.Plot.Remove(text);
             }
 
-            coordinates_text_list = new List<ScottPlot.Plottables.Text>();
+            coordinates_text_list = [];
         }
     }
 
