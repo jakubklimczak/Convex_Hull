@@ -73,6 +73,16 @@
 
             return (val > 0) ? -1 : 1; // clock or anticlock wise
         }
+        /*
+         * Helper function allowing to get second element from the top of stack
+         */
+        private static Point TwoPointsBack(Stack<Point> stack)
+        {
+            Point top = stack.Pop();
+            Point result = stack.Peek();
+            stack.Push(top);
+            return result;
+        }
 
         /*
          * Function that performs Jarvis-Hull algorithm on an array of 2d geometrical points (X, Y)
@@ -118,6 +128,44 @@
                 currentPointIndex = nextPointIndex;
             } while (currentPointIndex != leftmostIndex);
 
+            string figureName = GetFigureName(pointList.Count);
+            return new Result([.. pointList], figureName);
+        }
+
+        /*
+         * Function that performs Graham-Hull algorithm on an array of 2d geometrical points (X, Y)
+         * Returns an ordered array of points
+         */
+        public static Result GrahamScan(Point[] inputPointsArray)
+        {
+            // Handle the cases where there are 0, 1, or 2 points directly, skipping the computationally intensive part of the function
+            if (inputPointsArray.Length == 0 || inputPointsArray.Length == 1 || inputPointsArray.Length == 2)
+            {
+                return new Result(points: inputPointsArray, shape: GetFigureName(inputPointsArray.Length));
+            }
+
+            inputPointsArray = RemoveDuplicates(inputPointsArray);
+
+            // Find the point with the lowest y-coordinate, break ties by the lowest x-coordinate
+            Point start = inputPointsArray.OrderBy(p => p.Y).ThenBy(p => p.X).First();
+
+            // Sort the points by the polar angle with the start point
+            var sortedPoints = inputPointsArray.OrderBy(p => Math.Atan2(p.Y - start.Y, p.X - start.X)).ToArray();
+
+            Stack<Point> hull = new Stack<Point>();
+            hull.Push(start);
+
+            foreach (var point in sortedPoints)
+            {
+                while (hull.Count > 1 && Orientation(TwoPointsBack(hull), hull.Peek(), point) < 0)
+                {
+                    hull.Pop();
+                }
+                hull.Push(point);
+            }
+
+ 
+            List<Point> pointList = hull.ToList();
             string figureName = GetFigureName(pointList.Count);
             return new Result([.. pointList], figureName);
         }
