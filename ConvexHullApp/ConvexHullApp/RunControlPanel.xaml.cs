@@ -47,7 +47,7 @@ namespace ConvexHullApp
     }
 
     /// <summary>
-    /// Logika interakcji dla klasy RunControlPanel.xaml
+    /// Interaction logic for class RunControlPanel.xaml
     /// </summary>
     public partial class RunControlPanel : UserControl
     {

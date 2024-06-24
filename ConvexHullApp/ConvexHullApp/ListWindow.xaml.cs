@@ -16,7 +16,7 @@ using System.Windows.Shapes;
 namespace ConvexHullApp
 {
     /// <summary>
-    /// Logika interakcji dla klasy ListWindow.xaml
+    /// Interaction logic for class ListWindow.xaml
     /// </summary>
     public partial class ListWindow : Window
     {

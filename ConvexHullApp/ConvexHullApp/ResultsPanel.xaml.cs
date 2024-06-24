@@ -16,7 +16,7 @@ using System.Windows.Shapes;
 namespace ConvexHullApp
 {
     /// <summary>
-    /// Logika interakcji dla klasy ResultsPanel.xaml
+    /// Interaction logic for class ResultsPanel.xaml
     /// </summary>
     public partial class ResultsPanel : UserControl
     {
