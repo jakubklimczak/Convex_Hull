@@ -149,7 +149,7 @@ namespace ConvexHullApp
         public void Lock() 
         {
             is_locked = true;
-            PointChart.Plot.DataBackground.Color = ScottPlot.Color.FromColor(System.Drawing.Color.Gray);
+            PointChart.Plot.DataBackground.Color = ScottPlot.Color.FromColor(System.Drawing.Color.LightGray);
         }
 
         public void Unlock() 
@@ -217,6 +217,11 @@ namespace ConvexHullApp
             return points_array;
         }
 
+        public AxisLimits GetAxisLimits() 
+        {            
+            return PointChart.Plot.Axes.GetLimits();
+        }
+
         public void RemoveHighlightedPoint() 
         {
             coordinates_list.Remove(highlight_marker.Location);
@@ -230,13 +235,11 @@ namespace ConvexHullApp
         private void RemovePointsText(Coordinates coord) 
         {
             string coordinates_text = GetTextFromCoordinates(coord);
-            Debug.WriteLine(coordinates_text);
 
             var text_plottables = PointChart.Plot.GetPlottables<ScottPlot.Plottables.Text>();
             for (int i = 0; i < text_plottables.Count(); i++)
             {
                 var item = text_plottables.ElementAt(i);
-                Debug.WriteLine(item.LabelText);
 
                 if (item.LabelText == coordinates_text && item.Location == coord)
                 {
@@ -276,6 +279,7 @@ namespace ConvexHullApp
         public void ClearHull() 
         {
             PointChart.Plot.Remove(hull!);
+            PointChart.Refresh();
         }
 
         private void UserControlLoaded(object sender, RoutedEventArgs e) 

@@ -47,7 +47,7 @@ namespace ConvexHullApp
     }
 
     /// <summary>
-    /// Logika interakcji dla klasy RunControlPanel.xaml
+    /// Interaction logic for class RunControlPanel.xaml
     /// </summary>
     public partial class RunControlPanel : UserControl
     {
@@ -62,7 +62,6 @@ namespace ConvexHullApp
 
         private void CleanCanvasCallback(object sender, RoutedEventArgs e)
         {
-            Debug.WriteLine("clean");
             CleanCavasButtonClicked?.Invoke(this, EventArgs.Empty);
         }
 
@@ -139,5 +138,15 @@ namespace ConvexHullApp
             }
 
         }
+        public void Hide()
+        {
+            ThisPanel.Visibility = Visibility.Collapsed;
+        }
+
+        public void Show()
+        {
+            ThisPanel.Visibility = Visibility.Visible;
+        }
+
     }
 }

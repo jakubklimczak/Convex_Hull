@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ConvexHullApp"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="1920"
+             x:Name="ThisPanel">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -16,16 +17,18 @@
         
         <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <Label VerticalAlignment="Center">Ilośc punktów</Label>
-                <TextBox Width="100" Height="30" Margin="10" x:Name="RandomPointsTextBox" PreviewTextInput="PositiveNumbersTextBoxValidation"/>
+                <Label VerticalAlignment="Center" FontSize="20">Points count</Label>
+                <TextBox Text="4" Width="100" Height="30" Margin="10" x:Name="RandomPointsTextBox" PreviewTextInput="PositiveNumbersTextBoxValidation" FontSize="20"/>
             </StackPanel>
-            <Button Width="100" Height="50" Click="RandomizePointsCallback">
-                Losuj punkty
+            <Button Width="120" Height="70" Click="RandomizePointsCallback" FontSize="20">
+                <TextBlock TextWrapping="Wrap" TextAlignment="Center">
+                Randomize Points
+                </TextBlock>
             </Button>
         </StackPanel>
 
-        <Button Width="100" Height="50" Name="clean_btn" Grid.Column="0" Click="CleanCanvasCallback">
-            Wyczyść
+        <Button Width="120" Height="50" Name="clean_btn" Grid.Column="0" Click="CleanCanvasCallback" FontSize="20">
+            Clean
         </Button>
 
         <StackPanel Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="AlgorithmPanel">
@@ -44,11 +47,11 @@
 
         <StackPanel Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <Label VerticalAlignment="Center">Ilość powtórzeń</Label>
-                <TextBox Width="100" Height="30" Margin="10" PreviewTextInput="PositiveNumbersTextBoxValidation" x:Name="IterrationsTextBox"/>
+                <Label VerticalAlignment="Center" FontSize="20">Number of iterations</Label>
+                <TextBox Text="1" Width="100" Height="30" Margin="10" PreviewTextInput="PositiveNumbersTextBoxValidation" x:Name="IterrationsTextBox" FontSize="20"/>
             </StackPanel>
-            <Button Width="100" Height="50" Click="RunAlgorithmCallback">
-                Uruchom
+            <Button Width="120" Height="50" Click="RunAlgorithmCallback" FontSize="20">
+                Run
             </Button>
         </StackPanel>
     </Grid>
