@@ -276,6 +276,7 @@ namespace ConvexHullApp
         public void ClearHull() 
         {
             PointChart.Plot.Remove(hull!);
+            PointChart.Refresh();
         }
 
         private void UserControlLoaded(object sender, RoutedEventArgs e) 

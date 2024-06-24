@@ -23,5 +23,6 @@
 
         <local:ChartPanel Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" Grid.ColumnSpan="4" x:Name="points_chart_panel"/>
         <local:RunControlPanel Grid.Row="3" Grid.ColumnSpan="4" x:Name="run_control_panel"/>
+        <local:ResultsPanel Grid.Row="3" Grid.ColumnSpan="4" x:Name="results_panel" Visibility="Collapsed"/>
     </Grid>
 </Window>
