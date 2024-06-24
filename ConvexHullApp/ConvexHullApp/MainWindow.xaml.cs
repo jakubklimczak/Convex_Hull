@@ -70,7 +70,14 @@ public partial class MainWindow : Window
     }
     private void RandomizePointsDelegate(object sender, RandomizePointsEventArgs args)
     {
-        MessageBox.Show("Losuj punkty, argumenty: ilość punktów: " + args.AmountOfPoints);
+        var limits = points_chart_panel.GetAxisLimits();
+
+        for(int i = 0;i < args.AmountOfPoints; i++) 
+        {
+            var point = CoordRandomizer.GetRandomCoordinates(limits.Left, limits.Right, limits.Bottom, limits.Top);
+            points_chart_panel.AddNewPoint(point.X, point.Y);
+        }
+
     }
 
     private void ReturnToEdit(object sender, EventArgs args) 

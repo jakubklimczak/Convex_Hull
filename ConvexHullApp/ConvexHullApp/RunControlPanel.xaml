@@ -18,7 +18,7 @@
         <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <Label VerticalAlignment="Center" FontSize="20">Points count</Label>
-                <TextBox Width="100" Height="30" Margin="10" x:Name="RandomPointsTextBox" PreviewTextInput="PositiveNumbersTextBoxValidation"/>
+                <TextBox Text="4" Width="100" Height="30" Margin="10" x:Name="RandomPointsTextBox" PreviewTextInput="PositiveNumbersTextBoxValidation" FontSize="20"/>
             </StackPanel>
             <Button Width="120" Height="70" Click="RandomizePointsCallback" FontSize="20">
                 <TextBlock TextWrapping="Wrap" TextAlignment="Center">
@@ -48,7 +48,7 @@
         <StackPanel Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <Label VerticalAlignment="Center" FontSize="20">Number of iterations</Label>
-                <TextBox Width="100" Height="30" Margin="10" PreviewTextInput="PositiveNumbersTextBoxValidation" x:Name="IterrationsTextBox"/>
+                <TextBox Text="1" Width="100" Height="30" Margin="10" PreviewTextInput="PositiveNumbersTextBoxValidation" x:Name="IterrationsTextBox" FontSize="20"/>
             </StackPanel>
             <Button Width="120" Height="50" Click="RunAlgorithmCallback" FontSize="20">
                 Run
