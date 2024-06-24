@@ -41,8 +41,7 @@ public partial class MainWindow : Window
                 break;
 
             case AlgorithmType.Graham:
-                throw new NotImplementedException("Jeśli to widzisz to znaczy, że Miłosz nie zaimplementował tego alogorytmu");
-                AlgorithmFunction = ConvexHullAlgorithms.JarvisHullAlgorithm;
+                AlgorithmFunction = ConvexHullAlgorithms.GrahamScan;
                 break;
 
             default:
