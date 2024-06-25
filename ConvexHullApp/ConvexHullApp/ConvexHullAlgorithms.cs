@@ -166,6 +166,10 @@
 
  
             List<Point> pointList = hull.ToList();
+            if (pointList.Count > 0)
+            {
+                pointList.RemoveAt(pointList.Count - 1);
+            }
             string figureName = GetFigureName(pointList.Count);
             return new Result([.. pointList], figureName);
         }
