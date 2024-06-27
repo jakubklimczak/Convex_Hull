@@ -72,10 +72,17 @@ public partial class MainWindow : Window
     {
         var limits = points_chart_panel.GetAxisLimits();
 
-        for(int i = 0;i < args.AmountOfPoints; i++) 
+        try
         {
-            var point = CoordRandomizer.GetRandomCoordinates(limits.Left, limits.Right, limits.Bottom, limits.Top);
-            points_chart_panel.AddNewPoint(point.X, point.Y);
+            for(int i = 0;i < args.AmountOfPoints; i++) 
+            {
+                var point = CoordRandomizer.GetRandomCoordinates(limits.Left, limits.Right, limits.Bottom, limits.Top);
+                points_chart_panel.AddNewPoint(point.X, point.Y);
+            }
+        }
+        catch (Exception ex) 
+        {
+            MessageBox.Show(ex.Message);
         }
 
     }

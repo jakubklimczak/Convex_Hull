@@ -34,11 +34,6 @@ namespace ConvexHullApp
             input_points_list_window.Title = "Input points list";
         }
 
-        private void DisplayExecutionTimeDetails(object sender, RoutedEventArgs e) 
-        {
-
-        }
-
         private void DisplayInputPointsList(object sender, RoutedEventArgs e)
         {
             input_points_list_window.Show();
