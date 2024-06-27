@@ -49,6 +49,7 @@ namespace ConvexHullApp
 
             PointChart.Refresh();
             Unlock();
+            ShowCoordinatesText();
         }
 
         private void ChartMouseClicked(object sender, System.Windows.Input.MouseButtonEventArgs e)
