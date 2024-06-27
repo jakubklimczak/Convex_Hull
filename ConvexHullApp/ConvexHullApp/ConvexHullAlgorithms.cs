@@ -108,6 +108,11 @@
                 {
                     leftmostIndex = i;
                 }
+
+                else if (inputPointsArray[i].X.Equals(inputPointsArray[leftmostIndex].X) && inputPointsArray[i].Y < inputPointsArray[leftmostIndex].Y)
+                {
+                    leftmostIndex = i;
+                }
             }
             int currentPointIndex = leftmostIndex, nextPointIndex;
 
