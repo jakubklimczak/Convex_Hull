@@ -73,6 +73,7 @@
 
             return (val > 0) ? -1 : 1; // clock or anticlock wise
         }
+
         /*
          * Helper function allowing to get second element from the top of stack
          */
@@ -105,6 +106,11 @@
             for (int i = 1; i < inputPointsArray.Length; i++)
             {
                 if (inputPointsArray[i].X < inputPointsArray[leftmostIndex].X)
+                {
+                    leftmostIndex = i;
+                }
+
+                else if (inputPointsArray[i].X.Equals(inputPointsArray[leftmostIndex].X) && inputPointsArray[i].Y < inputPointsArray[leftmostIndex].Y)
                 {
                     leftmostIndex = i;
                 }
@@ -152,7 +158,7 @@
             // Sort the points by the polar angle with the start point
             var sortedPoints = inputPointsArray.OrderBy(p => Math.Atan2(p.Y - start.Y, p.X - start.X)).ToArray();
 
-            Stack<Point> hull = new Stack<Point>();
+            Stack<Point> hull = new();
             hull.Push(start);
 
             foreach (var point in sortedPoints)
@@ -165,7 +171,7 @@
             }
 
  
-            List<Point> pointList = hull.ToList();
+            List<Point> pointList = [.. hull];
             if (pointList.Count > 0)
             {
                 pointList.RemoveAt(pointList.Count - 1);

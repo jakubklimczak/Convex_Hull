@@ -1,31 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+﻿using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace ConvexHullApp
 {
-    public class RandomizePointsEventArgs : EventArgs
+    public class RandomizePointsEventArgs(int _AmountOfPoints) : EventArgs
     {
-        public int AmountOfPoints { get; set; }
-
-        public RandomizePointsEventArgs(int _AmountOfPoints)
-        {
-            AmountOfPoints = _AmountOfPoints;
-        }
+        public int AmountOfPoints { get; set; } = _AmountOfPoints;
     }
 
     public enum AlgorithmType 
@@ -98,7 +80,7 @@ namespace ConvexHullApp
 
         }
         //This function can throw if incorrect string is inserted
-        private int GetNumberFromTextBox(TextBox TextBox) 
+        private static int GetNumberFromTextBox(TextBox TextBox)
         {
             int NumberValue = Int32.Parse(TextBox.Text);
             return NumberValue;
@@ -112,31 +94,22 @@ namespace ConvexHullApp
         }
 
         //This function assumes 0 is not positive
-        private bool IsTextPositiveNumber(string text)
+        private static bool IsTextPositiveNumber(string text)
         {
-            Regex regex = new Regex("^[1-9][0-9]*$");
+            Regex regex = new("^[1-9][0-9]*$");
             return regex.IsMatch(text);
         }
 
         private AlgorithmType GetAlgorithmType()
         {
-            var CheckedRadioButton = AlgorithmPanel.Children.OfType<RadioButton>().FirstOrDefault(r => r.IsChecked.HasValue && r.IsChecked.Value);
-            if (CheckedRadioButton == null)
-                throw new ArgumentNullException(message:"No algorithm has been selected",null);
-
+            var CheckedRadioButton = AlgorithmPanel.Children.OfType<RadioButton>().FirstOrDefault(r => r.IsChecked.HasValue && r.IsChecked.Value) ?? throw new ArgumentNullException(message: "No algorithm has been selected", null);
             string? content = CheckedRadioButton.Content.ToString();
-            switch (content) 
+            return content switch
             {
-                case "Graham":
-                    return AlgorithmType.Graham;
-
-                case "Jarvis":
-                    return AlgorithmType.Jarvis;
-
-                default:
-                    throw new ArgumentException("Undefined type of algorithm has been selected");
-            }
-
+                "Graham" => AlgorithmType.Graham,
+                "Jarvis" => AlgorithmType.Jarvis,
+                _ => throw new ArgumentException("Undefined type of algorithm has been selected"),
+            };
         }
         public void Hide()
         {

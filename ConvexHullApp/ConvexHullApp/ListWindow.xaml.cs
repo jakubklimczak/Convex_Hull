@@ -1,17 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace ConvexHullApp
 {
@@ -27,7 +16,7 @@ namespace ConvexHullApp
 
         public void AddToList(ConvexHullApp.Point point) 
         {
-            TextBlock newItem = new TextBlock
+            TextBlock newItem = new()
             {
                 Text = ListWindowStackPanel.Children.Count + ") " + (point.X).ToString().PadRight(21) + " " + (point.Y).ToString().PadRight(21),
                 FontSize = 18,
