@@ -1,17 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace ConvexHullApp
 {
@@ -20,7 +8,7 @@ namespace ConvexHullApp
     /// </summary>
     public partial class ResultsPanel : UserControl
     {
-        private ListWindow input_points_list_window;
+        private readonly ListWindow input_points_list_window;
 
         public event EventHandler? ReturnButtonClicked;
 
@@ -29,9 +17,11 @@ namespace ConvexHullApp
         {
             InitializeComponent();
 
-            input_points_list_window = new ListWindow();
-            input_points_list_window.Owner = this.Parent as Window;
-            input_points_list_window.Title = "Input points list";
+            input_points_list_window = new ListWindow
+            {
+                Owner = Parent as Window,
+                Title = "Input points list"
+            };
         }
 
         private void DisplayInputPointsList(object sender, RoutedEventArgs e)
@@ -48,7 +38,7 @@ namespace ConvexHullApp
         {
             foreach(var point in points) 
             {
-                TextBlock newItem = new TextBlock
+                TextBlock newItem = new()
                 {
                     Text = (point.X).ToString().PadRight(21) + " " + (point.Y).ToString().PadRight(21),
                     FontSize = 18,

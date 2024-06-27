@@ -21,7 +21,7 @@ namespace ConvexHullApp
      */
     public partial class ChartPanel : UserControl
     {
-        private const int MAX_POINTS_AMOUNT = 1000; //more than that gives some performance issues, whomp whomp...
+        private const int MAX_POINTS_AMOUNT = 1000; //more than that gives some performance issues
         private ChartPanelMode current_mode;
         private List<Coordinates> coordinates_list;
         private ScottPlot.Plottables.Scatter point_scatter;
@@ -68,7 +68,8 @@ namespace ConvexHullApp
                     try
                     {
                         AddNewPoint(current_coordinates);
-                    }catch (Exception ex)
+                    } 
+                    catch (Exception ex)
                     {
                         MessageBox.Show(ex.Message);
                     }
@@ -209,16 +210,16 @@ namespace ConvexHullApp
 
         public void AddNewPoint(ScottPlot.Coordinates _coordinates)
         {
-            if(coordinates_list.Count >= MAX_POINTS_AMOUNT)
+            if (coordinates_list.Count >= MAX_POINTS_AMOUNT)
             {
-                throw new Exception("Too many points already in chart");
+                throw new Exception("Too many points already in the chart");
             }
 
             coordinates_list.Add(_coordinates);
             string coordinates_text = GetTextFromCoordinates(_coordinates);
             var text = PointChart.Plot.Add.Text(coordinates_text, _coordinates);
             coordinates_text_list.Add(text);
-            if(!coordinates_visible)
+            if (!coordinates_visible)
                 text.IsVisible = false;
 
             PointChart.Refresh();
@@ -252,8 +253,6 @@ namespace ConvexHullApp
             PointChart.Refresh();
         }
 
-
-        //This whole method is just very very bad hack but I have no effort to do it better
         private void RemovePointsText(Coordinates coord) 
         {
             string coordinates_text = GetTextFromCoordinates(coord);

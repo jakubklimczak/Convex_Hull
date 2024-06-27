@@ -73,6 +73,7 @@
 
             return (val > 0) ? -1 : 1; // clock or anticlock wise
         }
+
         /*
          * Helper function allowing to get second element from the top of stack
          */

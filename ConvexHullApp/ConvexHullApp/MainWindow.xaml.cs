@@ -32,21 +32,12 @@ public partial class MainWindow : Window
 
         var points = points_chart_panel.GetPointsList();
         var result = new Result([],"");
-        Func<Point[],Result> AlgorithmFunction = null;
-
-        switch (args.AlgType) 
+        Func<Point[], Result>? AlgorithmFunction = args.AlgType switch
         {
-            case AlgorithmType.Jarvis:
-                AlgorithmFunction = ConvexHullAlgorithms.JarvisHullAlgorithm;
-                break;
-
-            case AlgorithmType.Graham:
-                AlgorithmFunction = ConvexHullAlgorithms.GrahamScan;
-                break;
-
-            default:
-                throw new Exception("Unkown Algorithm type!");
-        }
+            AlgorithmType.Jarvis => ConvexHullAlgorithms.JarvisHullAlgorithm,
+            AlgorithmType.Graham => ConvexHullAlgorithms.GrahamScan,
+            _ => throw new Exception("Unkown Algorithm type!"),
+        };
 
         stopwatch.Start();
         for (int i = 0; i < args.NumberOfIterattions; i++)
