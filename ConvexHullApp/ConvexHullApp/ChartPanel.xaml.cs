@@ -1,4 +1,5 @@
 ﻿using ScottPlot;
+using ScottPlot.Plottables;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
@@ -29,6 +30,7 @@ namespace ConvexHullApp
         private List<ScottPlot.Plottables.Text> coordinates_text_list;
 
         private bool is_locked;
+        private bool coordinates_visible;
         public ChartPanel()
         {
             InitializeComponent();
@@ -176,6 +178,7 @@ namespace ConvexHullApp
                 text.IsVisible = false;
             }
             PointChart.Refresh();
+            coordinates_visible = false;
         }
 
         public void ShowCoordinatesText() 
@@ -188,6 +191,7 @@ namespace ConvexHullApp
                 text.IsVisible = true;
             }
             PointChart.Refresh();
+            coordinates_visible = true;
         }
 
         public void ShowGrid() 
@@ -211,7 +215,11 @@ namespace ConvexHullApp
 
             coordinates_list.Add(_coordinates);
             string coordinates_text = GetTextFromCoordinates(_coordinates);
-            coordinates_text_list.Add(PointChart.Plot.Add.Text(coordinates_text, _coordinates));
+            var text = PointChart.Plot.Add.Text(coordinates_text, _coordinates);
+            coordinates_text_list.Add(text);
+            if(!coordinates_visible)
+                text.IsVisible = false;
+
             PointChart.Refresh();
         }
 
