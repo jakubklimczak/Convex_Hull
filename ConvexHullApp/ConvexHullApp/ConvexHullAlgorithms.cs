@@ -157,7 +157,7 @@
             // Sort the points by the polar angle with the start point
             var sortedPoints = inputPointsArray.OrderBy(p => Math.Atan2(p.Y - start.Y, p.X - start.X)).ToArray();
 
-            Stack<Point> hull = new Stack<Point>();
+            Stack<Point> hull = new();
             hull.Push(start);
 
             foreach (var point in sortedPoints)
@@ -170,7 +170,7 @@
             }
 
  
-            List<Point> pointList = hull.ToList();
+            List<Point> pointList = [.. hull];
             if (pointList.Count > 0)
             {
                 pointList.RemoveAt(pointList.Count - 1);
