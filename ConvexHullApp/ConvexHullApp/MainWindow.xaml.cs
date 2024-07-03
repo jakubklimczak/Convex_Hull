@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Drawing;
 using System.Windows;
 
 namespace ConvexHullApp;
@@ -17,6 +18,7 @@ public partial class MainWindow : Window
         run_control_panel.CleanCavasButtonClicked += CleanCanvasDelegate!;
         run_control_panel.RunAlgorithmButtonClicked += RunAlgorithmDelegate!;
         run_control_panel.RandomizePointsButtonClicked += RandomizePointsDelegate!;
+        run_control_panel.AddNewPointClicked += AddNewPointDelegater!;
         results_panel.ReturnButtonClicked += ReturnToEdit!;
     }
 
@@ -26,6 +28,10 @@ public partial class MainWindow : Window
         points_chart_panel.Unlock();
     }
 
+    private void AddNewPointDelegater(object sender, AddNewPointArgs args) 
+    {
+        points_chart_panel.AddNewPoint(args.x, args.y);
+    }
     private void RunAlgorithmDelegate(object sender, RunAlgorithmEventArgs args) 
     {
         Stopwatch stopwatch = new Stopwatch();

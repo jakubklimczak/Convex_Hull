@@ -27,9 +27,24 @@
             </Button>
         </StackPanel>
 
-        <Button Width="120" Height="50" Name="clean_btn" Grid.Column="0" Click="CleanCanvasCallback" FontSize="20">
-            Clean
-        </Button>
+        <StackPanel Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Button Width="120" Height="50" Name="clean_btn" Click="CleanCanvasCallback" FontSize="20">
+                Clean
+            </Button>
+            <StackPanel Orientation="Horizontal">
+                <Label VerticalAlignment="Center" FontSize="20">X</Label>
+                <TextBox Text="1,0" Width="100" Height="30" Margin="10" FontSize="20" x:Name="new_point_x"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label VerticalAlignment="Center" FontSize="20">Y</Label>
+                <TextBox Text="1,0" Width="100" Height="30" Margin="10" FontSize="20" x:Name="new_point_y"/>
+            </StackPanel>
+            
+            <Button Width="120" Height="50" FontSize="20" Click="AddPointCallback">
+                Add point
+            </Button>
+        </StackPanel>
+
 
         <StackPanel Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="AlgorithmPanel">
             <RadioButton IsChecked="True" Content="Graham" GroupName="AlgorthimOptions" Margin="0,0,0,10">
