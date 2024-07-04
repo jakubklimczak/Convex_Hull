@@ -86,6 +86,40 @@
         }
 
         /*
+         * Helper function used to remove middle collinear points
+         */       
+        public static Point[] RemoveMiddleCollinearPoints(Point[] points)
+        {
+            if (points.Length < 3)
+            {
+                return points;
+            }
+
+            List<Point> result = new List<Point>();
+            result.Add(points[0]);
+
+            for (int i = 1; i < points.Length - 1; i++)
+            {
+                if (Orientation(result[result.Count - 1], points[i], points[i + 1]) != 0)
+                {
+                    result.Add(points[i]);
+                }
+            }
+            result.Add(points[points.Length - 1]);
+
+            if (result.Count > 2 && Orientation(result[result.Count - 1], result[0], result[1]) == 0)
+            {
+                result.RemoveAt(0);
+            }
+
+            if (result.Count > 2 && Orientation(result[result.Count - 2], result[result.Count - 1], result[0]) == 0)
+            {
+                result.RemoveAt(result.Count-1);
+            }
+            return result.ToArray();
+        }
+
+        /*
          * Function that performs Jarvis-Hull algorithm on an array of 2d geometrical points (X, Y)
          * Returns an ordered array of points
          */
@@ -98,6 +132,12 @@
             }
 
             inputPointsArray = RemoveDuplicates(inputPointsArray);
+
+            //Sorting is necessery to remove collinear points
+            Point start = inputPointsArray.OrderBy(p => p.Y).ThenBy(p => p.X).First();
+            // Sort the points by the polar angle with the start point
+            inputPointsArray = inputPointsArray.OrderBy(p => Math.Atan2(p.Y - start.Y, p.X - start.X)).ThenBy(p => p.X).ToArray();
+            inputPointsArray = RemoveMiddleCollinearPoints(inputPointsArray);
 
             List<Point> pointList = [];
 
@@ -156,7 +196,9 @@
             Point start = inputPointsArray.OrderBy(p => p.Y).ThenBy(p => p.X).First();
 
             // Sort the points by the polar angle with the start point
-            var sortedPoints = inputPointsArray.OrderBy(p => Math.Atan2(p.Y - start.Y, p.X - start.X)).ToArray();
+            var sortedPoints = inputPointsArray.OrderBy(p => Math.Atan2(p.Y - start.Y, p.X - start.X)).ThenBy(p => p.X).ToArray();
+
+            sortedPoints = RemoveMiddleCollinearPoints(sortedPoints);
 
             Stack<Point> hull = new();
             hull.Push(start);
