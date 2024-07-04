@@ -10,6 +10,13 @@ namespace ConvexHullApp
         public int AmountOfPoints { get; set; } = _AmountOfPoints;
     }
 
+    public class AddNewPointArgs(double _x, double _y) : EventArgs
+    {
+        public double x { get; set; } = _x;
+        public double y { get; set; } = _y;
+    }
+
+
     public enum AlgorithmType 
     {
         Graham,
@@ -36,6 +43,7 @@ namespace ConvexHullApp
         public event EventHandler? CleanCavasButtonClicked;
         public event EventHandler<RandomizePointsEventArgs>? RandomizePointsButtonClicked;
         public event EventHandler<RunAlgorithmEventArgs>? RunAlgorithmButtonClicked;
+        public event EventHandler<AddNewPointArgs>? AddNewPointClicked;
 
         public RunControlPanel()
         {
@@ -62,6 +70,24 @@ namespace ConvexHullApp
             
         }
 
+        private void AddPointCallback(object sender, RoutedEventArgs e) 
+        {
+            TextBox x_text = (TextBox)FindName("new_point_x");
+            TextBox y_text = (TextBox)FindName("new_point_y");
+
+            try
+            {
+                double x_double = double.Parse(x_text.Text);
+                double y_double = double.Parse(y_text.Text);
+                var args = new AddNewPointArgs(x_double, y_double);
+                AddNewPointClicked?.Invoke(this, args);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+        }
         private void RunAlgorithmCallback(object sender, RoutedEventArgs e)
         {
             try
