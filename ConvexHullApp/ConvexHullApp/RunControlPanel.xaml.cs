@@ -85,7 +85,6 @@ namespace ConvexHullApp
             int NumberValue = Int32.Parse(TextBox.Text);
             return NumberValue;
         }
-        //FIXME: this function is not triggered when spacebar or deletion is performed
         private void PositiveNumbersTextBoxValidation(object sender, TextCompositionEventArgs e)
         {
             TextBox? textbox = (sender as TextBox);
