@@ -133,12 +133,6 @@
 
             inputPointsArray = RemoveDuplicates(inputPointsArray);
 
-            //Sorting is necessery to remove collinear points
-            Point start = inputPointsArray.OrderBy(p => p.Y).ThenBy(p => p.X).First();
-            // Sort the points by the polar angle with the start point
-            inputPointsArray = inputPointsArray.OrderBy(p => Math.Atan2(p.Y - start.Y, p.X - start.X)).ThenBy(p => p.X).ToArray();
-            inputPointsArray = RemoveMiddleCollinearPoints(inputPointsArray);
-
             List<Point> pointList = [];
 
             // Detection of leftmost point in the array - it has to be a part of convex hull
@@ -174,6 +168,14 @@
                 currentPointIndex = nextPointIndex;
             } while (currentPointIndex != leftmostIndex);
 
+            Point[] temp = pointList.ToArray();
+            //Sorting is necessery to remove collinear points
+            Point start = temp.OrderBy(p => p.Y).ThenBy(p => p.X).First();
+            // Sort the points by the polar angle with the start point
+            temp = temp.OrderBy(p => Math.Atan2(p.Y - start.Y, p.X - start.X)).ThenBy(p => p.X).ThenByDescending(p => p.Y).ToArray();
+            temp = RemoveMiddleCollinearPoints(temp);
+            pointList = temp.ToList();
+
             string figureName = GetFigureName(pointList.Count);
             return new Result([.. pointList], figureName);
         }
@@ -196,9 +198,8 @@
             Point start = inputPointsArray.OrderBy(p => p.Y).ThenBy(p => p.X).First();
 
             // Sort the points by the polar angle with the start point
-            var sortedPoints = inputPointsArray.OrderBy(p => Math.Atan2(p.Y - start.Y, p.X - start.X)).ThenBy(p => p.X).ToArray();
+            var sortedPoints = inputPointsArray.OrderBy(p => Math.Atan2(p.Y - start.Y, p.X - start.X)).ThenBy(p => p.X).ThenByDescending(p => p.Y).ToArray();
 
-            sortedPoints = RemoveMiddleCollinearPoints(sortedPoints);
 
             Stack<Point> hull = new();
             hull.Push(start);
@@ -218,6 +219,9 @@
             {
                 pointList.RemoveAt(pointList.Count - 1);
             }
+            Point[] temp = pointList.ToArray();
+            temp = RemoveMiddleCollinearPoints(temp);
+            pointList = temp.ToList();
             string figureName = GetFigureName(pointList.Count);
             return new Result([.. pointList], figureName);
         }
